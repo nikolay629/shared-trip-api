@@ -5,6 +5,9 @@ namespace App\Entity;
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 
+/**
+ * Class User
+ */
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 class User
 {
@@ -31,16 +34,33 @@ class User
     #[ORM\Column(length: 255)]
     private ?string $password = null;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: AppliedTrip::class)]
+    private AppliedTrip $appliedTrip;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: ConfirmTrip::class)]
+    private ConfirmTrip $confirmTrip;
+
+    /**
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * @return string|null
+     */
     public function getEmail(): ?string
     {
         return $this->email;
     }
 
+    /**
+     * @param string $email
+     *
+     * @return $this
+     */
     public function setEmail(string $email): self
     {
         $this->email = $email;
@@ -48,11 +68,19 @@ class User
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getFirstName(): ?string
     {
         return $this->firstName;
     }
 
+    /**
+     * @param string $firstName
+     *
+     * @return $this
+     */
     public function setFirstName(string $firstName): self
     {
         $this->firstName = $firstName;
@@ -60,11 +88,19 @@ class User
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getLastName(): ?string
     {
         return $this->lastName;
     }
 
+    /**
+     * @param string $lastName
+     *
+     * @return $this
+     */
     public function setLastName(string $lastName): self
     {
         $this->lastName = $lastName;
@@ -72,11 +108,19 @@ class User
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getPhone(): ?string
     {
         return $this->phone;
     }
 
+    /**
+     * @param string $phone
+     *
+     * @return $this
+     */
     public function setPhone(string $phone): self
     {
         $this->phone = $phone;
@@ -84,11 +128,19 @@ class User
         return $this;
     }
 
+    /**
+     * @return int|null
+     */
     public function getAge(): ?int
     {
         return $this->age;
     }
 
+    /**
+     * @param int|null $age
+     *
+     * @return $this
+     */
     public function setAge(?int $age): self
     {
         $this->age = $age;
@@ -96,11 +148,19 @@ class User
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getPassword(): ?string
     {
         return $this->password;
     }
 
+    /**
+     * @param string $password
+     *
+     * @return $this
+     */
     public function setPassword(string $password): self
     {
         $this->password = $password;
