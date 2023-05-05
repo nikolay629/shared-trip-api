@@ -38,11 +38,11 @@ class Trip
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $comment = null;
 
-    #[ORM\OneToMany(mappedBy: 'trip', targetEntity: AppliedTrip::class)]
-    private AppliedTrip $appliedTrip;
+    #[ORM\Column(length: 255)]
+    private ?string $status = null;
 
-    #[ORM\OneToMany(mappedBy: 'trip', targetEntity: ConfirmTrip::class)]
-    private ConfirmTrip $confirmTrip;
+    #[Orm\ManyToOne(targetEntity: User::class, inversedBy: 'appliedTrip')]
+    private User $user;
 
     /**
      * @return int|null
@@ -191,4 +191,46 @@ class Trip
 
         return $this;
     }
+
+    /**
+     * @return string|null
+     */
+    public function getStatus(): ?string
+    {
+        return $this->status;
+    }
+
+    /**
+     * @param string|null $status
+     *
+     * @return $this
+     */
+    public function setStatus(?string $status): self
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+
+    /**
+     * @return User
+     */
+    public function getUser(): User
+    {
+        return $this->user;
+    }
+
+    /**
+     * @param User $user
+     *
+     * @return $this
+     */
+    public function setUser(User $user): self
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
 }

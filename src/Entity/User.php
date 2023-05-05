@@ -16,7 +16,7 @@ class User
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, unique: true)]
     private ?string $email = null;
 
     #[ORM\Column(length: 255)]
@@ -33,12 +33,6 @@ class User
 
     #[ORM\Column(length: 255)]
     private ?string $password = null;
-
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: AppliedTrip::class)]
-    private AppliedTrip $appliedTrip;
-
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: ConfirmTrip::class)]
-    private ConfirmTrip $confirmTrip;
 
     /**
      * @return int|null
@@ -166,5 +160,22 @@ class User
         $this->password = $password;
 
         return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getData(): array
+    {
+        $data = [];
+
+        $data['id'] = $this->getId();
+        $data['email'] = $this->getEmail();
+        $data['firstName'] = $this->getFirstName();
+        $data['lastName'] = $this->getLastName();
+        $data['phone'] = $this->getPhone();
+        $data['age'] = $this->getAge();
+
+        return $data;
     }
 }
