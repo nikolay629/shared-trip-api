@@ -9,30 +9,33 @@ declare(strict_types=1);
 namespace App\Action\User;
 
 use App\Entity\User;
+use App\Repository\UserRepository;
 use Doctrine\ORM\Exception\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
+use Exception;
 
 /**
  * Class CreateByRequestData
  */
 class CreateByRequestData
 {
-    private ManagerRegistry $managerRegistry;
+    private UserRepository $userRepository;
 
     /**
-     * @param ManagerRegistry $managerRegistry
+     * @param UserRepository $userRepository
      */
-    public function __construct(ManagerRegistry $managerRegistry)
+    public function __construct(UserRepository $userRepository)
     {
-        $this->managerRegistry = $managerRegistry;
+        $this->userRepository = $userRepository;
     }
 
     /**
      * @param array $requestData
      *
-     * @return array
+     * @return User
+     * @throws Exception
      */
-    public function execute(array $requestData): array
+    public function execute(array $requestData): User
     {
         if (
             !isset($requestData['email'])
@@ -42,12 +45,11 @@ class CreateByRequestData
             || !isset($requestData['age'])
             || !isset($requestData['password'])
         ) {
-            return ['message' => 'Can`t create user without all data!'];
+            throw new Exception('Can`t create user without all data!');
         }
 
         $hashedPassword = base64_encode($requestData['password']);
 
-        $result = [];
         $user = new User();
         $user->setEmail((string) $requestData['email']);
         $user->setFirstName((string) $requestData['firstName']);
@@ -55,15 +57,14 @@ class CreateByRequestData
         $user->setPhone((string) $requestData['phone']);
         $user->setAge((int) $requestData['age']);
         $user->setPassword($hashedPassword);
+
         try {
-            $this->managerRegistry->getManager()->persist($user);
-            $this->managerRegistry->getManager()->flush($user);
-            $result[$user->getId()] = $user->getData();
-        } catch (ORMException $e) {
-            $result['message'] = $e->getMessage();
+            $this->userRepository->save($user, true);
+        } catch (Exception $exception) {
+            throw new Exception($exception->getMessage());
         }
 
-        return $result;
+        return $user;
     }
 
 }

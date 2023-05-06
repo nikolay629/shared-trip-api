@@ -22,6 +22,9 @@ class AppliedTrip
     #[Orm\ManyToOne(targetEntity: User::class, inversedBy: 'appliedTrip')]
     private User $user;
 
+    #[ORM\Column]
+    private ?int $status;
+
     /**
      * @return int|null
      */
@@ -70,4 +73,23 @@ class AppliedTrip
         return $this;
     }
 
+    /**
+     * @return int?
+     */
+    public function getStatus(): ?int
+    {
+        return $this->status;
+    }
+
+    /**
+     * @param int $status
+     *
+     * @return $this
+     */
+    public function setStatus(int $status): self
+    {
+        $this->status = $status;
+
+        return $this;
+    }
 }

@@ -8,6 +8,7 @@ use App\Action\User\UpdateByRequestData;
 use App\Entity\User;
 use App\Helper\ResponseHelper;
 use Doctrine\Persistence\ManagerRegistry;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -70,11 +71,15 @@ class UserController extends AbstractController
     {
         $requestData = json_decode($request->getContent(), true);
 
-        $data = $this->createUserByRequestData->execute($requestData);
-        if (isset($data['message'])) {
-            $response = ResponseHelper::prepareError($data);
-        } else {
-            $response = ResponseHelper::prepareSuccess($data);
+        try {
+            $user = $this->createUserByRequestData->execute($requestData);
+            $response = ResponseHelper::prepareSuccess(
+                [$user->getId() => $user->getData()]
+            );
+        } catch (Exception $exception) {
+            $response = ResponseHelper::prepareError(
+                ['message' => $exception->getMessage()]
+            );
         }
 
         return $this->json($response);
@@ -194,4 +199,5 @@ class UserController extends AbstractController
         }
         return $data;
     }
+
 }

@@ -33,13 +33,13 @@ class Trip
     private ?int $seats = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
-    private ?string $price = null;
+    private ?float $price = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $comment = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $status = null;
+    #[ORM\Column]
+    private ?int $status = null;
 
     #[Orm\ManyToOne(targetEntity: User::class, inversedBy: 'appliedTrip')]
     private User $user;
@@ -153,19 +153,19 @@ class Trip
     }
 
     /**
-     * @return string|null
+     * @return float|null
      */
-    public function getPrice(): ?string
+    public function getPrice(): ?float
     {
         return $this->price;
     }
 
     /**
-     * @param string $price
+     * @param float $price
      *
      * @return $this
      */
-    public function setPrice(string $price): self
+    public function setPrice(float $price): self
     {
         $this->price = $price;
 
@@ -193,19 +193,19 @@ class Trip
     }
 
     /**
-     * @return string|null
+     * @return int|null
      */
-    public function getStatus(): ?string
+    public function getStatus(): ?int
     {
         return $this->status;
     }
 
     /**
-     * @param string|null $status
+     * @param int $status
      *
      * @return $this
      */
-    public function setStatus(?string $status): self
+    public function setStatus(int $status): self
     {
         $this->status = $status;
 
@@ -229,6 +229,66 @@ class Trip
     public function setUser(User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+
+    /**
+     * @return array
+     */
+    public function getData(): array
+    {
+        $data = [];
+
+        $data['id']         = $this->getId();
+        $data['cityFrom']   = $this->getCityFrom();
+        $data['cityTo']     = $this->getCityTo();
+        $data['hour']       = $this->getHour();
+        $data['date']       = $this->getDate();
+        $data['seats']      = $this->getSeats();
+        $data['price']      = $this->getPrice();
+        $data['status']     = $this->getStatus();
+        $data['comment']    = $this->getComment();
+        $data['user']       = $this->getUser()->getData();
+
+        return $data;
+    }
+
+    /**
+     * @param array $data
+     *
+     * @return self
+     */
+    public function setData(array $data): self
+    {
+        if (isset($data['cityFrom']) && $data['cityFrom']) {
+            $this->setCityFrom($data['cityFrom']);
+        }
+
+        if (isset($data['cityTo']) && $data['cityTo']) {
+            $this->setCityTo($data['cityTo']);
+        }
+
+        if (isset($data['hour']) && $data['hour']) {
+            $this->setHour($data['hour']);
+        }
+
+        if (isset($data['date']) && $data['date']) {
+            $this->setDate($data['date']);
+        }
+
+        if (isset($data['seats']) && $data['seats']) {
+            $this->setSeats($data['seats']);
+        }
+
+        if (isset($data['price']) && $data['price']) {
+            $this->setPrice($data['price']);
+        }
+
+        if (isset($data['comment']) && $data['comment']) {
+            $this->setComment($data['comment']);
+        }
 
         return $this;
     }
