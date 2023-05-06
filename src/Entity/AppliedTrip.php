@@ -92,4 +92,20 @@ class AppliedTrip
 
         return $this;
     }
+
+
+    /**
+     * @return array
+     */
+    public function getData(): array
+    {
+        $data = [];
+
+        $data['id'] = $this->getId();
+        $data['user'] = $this->getUser()->getData();
+        $data['trip'] = $this->getTrip()->getData();
+        $data['status'] = $this->getStatus();
+
+        return $data;
+    }
 }

@@ -90,7 +90,7 @@ class UserController extends AbstractController
      *
      * @return JsonResponse
      */
-    #[Route('/resetPassword', name: 'reset_password', methods: 'POST')]
+    #[Route('/reset-password', name: 'reset_password', methods: 'POST')]
     public function resetPassword(Request $request): JsonResponse
     {
         $requestData = json_decode($request->getContent(), true);
@@ -135,7 +135,7 @@ class UserController extends AbstractController
      *
      * @return JsonResponse
      */
-    #[Route("/getById/{id}", name: "get_by_id", methods:"GET")]
+    #[Route("/get-by-id/{id}", name: "get_by_id", methods:"GET")]
     public function getById(
         ManagerRegistry $managerRegistry,
         int $id
@@ -161,7 +161,7 @@ class UserController extends AbstractController
      *
      * @return JsonResponse
      */
-    #[Route("/getByEmail/{email}", name: "get_by_email", methods:"GET")]
+    #[Route("/get-by-email/{email}", name: "get_by_email", methods:"GET")]
     public function getByEmail(
         ManagerRegistry $managerRegistry,
         string $email

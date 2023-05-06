@@ -61,7 +61,7 @@ class TripController extends AbstractController
      *
      * @return JsonResponse
      */
-    #[Route('/getById/{id}', name: 'get_by_id', methods: 'GET')]
+    #[Route('/get-by-id/{id}', name: 'get_by_id', methods: 'GET')]
     public function getById(
         ManagerRegistry $managerRegistry,
         int $id
@@ -87,7 +87,7 @@ class TripController extends AbstractController
      *
      * @return JsonResponse
      */
-    #[Route('/get', name: 'get_by', methods: 'POST')]
+    #[Route('/get', name: 'get', methods: 'POST')]
     public function get(
         ManagerRegistry $managerRegistry,
         Request $request
